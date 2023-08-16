@@ -19,7 +19,8 @@
     "nodemon": "^3.0.1"
   },
   "scripts": {
-    "devstart": "nodemon app.js"
+    "devstart": "nodemon app.js",
+    "start":"node app.js"
   },
   "author": "",
   "license": "ISC",
