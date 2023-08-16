@@ -14,7 +14,7 @@ export default function Main() {
     <div className="w-full">
       <Navbar />
       <div className="w-full flex flex-col  p-5">
-        <div className="lg:grid grid-cols-4 gap-2 flex flex-col">
+        <div className="lg:grid grid-cols-4 gap-5 flex flex-col">
           <div className="flex flex-col col-span-2 bg-white py-3 px-2">
             <h2 className="text-purple-600 border-b text-xl text-center font-semibold pb-2">Task to-do today</h2>
             <div className="flex flex-col pt-4  w-full gap-4">
