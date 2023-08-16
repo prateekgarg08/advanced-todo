@@ -5,26 +5,20 @@ import Button from "./common/Button";
 import { login } from "../api/auth";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuthContext } from "../contexts/AuthContext";
+import { toast } from "react-toastify";
 function LoginComponent() {
   const navigate = useNavigate();
-  const [details, setDetails] = useState({ email: "", password: "" });
+  const date = new Date();
+  const [details, setDetails] = useState({ email: "", password: "", deadline: date.getDate() });
   const { setIsLoggedIn } = useAuthContext();
   function handleChange(e) {
     console.log("e");
-    console.log(e.target.value);
-    if (e.target.name == "email") {
+    const { name, value } = e.target;
+    if (e.target.name == name) {
       setDetails((obj) => {
         return {
           ...obj,
-          email: e.target.value,
-        };
-      });
-    }
-    if (e.target.name == "password") {
-      setDetails((obj) => {
-        return {
-          ...obj,
-          password: e.target.value,
+          [name]: value,
         };
       });
     }
@@ -32,10 +26,20 @@ function LoginComponent() {
 
   const handleSubmit = async () => {
     console.log("Submitting");
+    if (!details.email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$/)) {
+      toast.warn("Use valid email");
+      return;
+    }
+    if (details.password.length < 6) {
+      toast.warn("Password must be atleast of length 6");
+      return;
+    }
     try {
       const data = await login(details);
-      localStorage.setItem("token", data.token);
-      setIsLoggedIn(true);
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+        setIsLoggedIn(true);
+      }
     } catch (err) {
       setIsLoggedIn(false);
     }
@@ -46,11 +50,11 @@ function LoginComponent() {
       <div>
         <img src={logo} width={50} alt={"logo"} />
       </div>
-      <h1 className="text-xl font-medium text-purple-500 tracking-wide ">Login</h1>
+      <h1 className="text-xl font-medium text-purple-600 tracking-wide ">Login</h1>
       <Input name="email" label="E-mail" type="email" value={details.email} handleChange={handleChange} />
       <Input name="password" label="Password" type="password" value={details.password} handleChange={handleChange} />
       <div className="flex w-full justify-between items-center">
-        <Link to="/signin" className="text-purple-500 text-sm">
+        <Link to="/signin" className="text-purple-600 text-sm">
           Dont have an account? Sign up.
         </Link>
         <Button onClick={handleSubmit}>Login</Button>

@@ -1,5 +1,6 @@
 import axios from "axios"
 import '../axios'
+import { toast } from "react-toastify"
 const verifyToken = async (token) => {
   try {
     const { data } = await axios.post('/auth/verify', { token })
@@ -14,14 +15,32 @@ const verifyToken = async (token) => {
 
 const login = async (details) => {
   try {
+    toast("please wait")
     const { data } = await axios.post('/auth/login', details)
     console.log(data)
-
+    toast.success("login success")
     return data
   }
   catch (error) {
+    toast.error(error.toString())
     return error
   }
 }
 
-export { verifyToken, login }
+const signin = async (details) => {
+  try {
+    toast("Please wait")
+    const { data } = await axios.post('/auth/register', details)
+    console.log(data)
+    toast.success("login success")
+
+    return data
+  }
+  catch (error) {
+    toast.error(error.toString())
+
+    return error
+  }
+}
+
+export { verifyToken, login, signin }

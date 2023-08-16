@@ -7,7 +7,7 @@ const AuthContext = createContext()
 
 const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const token = JSON.stringify(localStorage.getItem('token'))
+  const token = localStorage.getItem('token')
   const navigate = useNavigate()
 
 
