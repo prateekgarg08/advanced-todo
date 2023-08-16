@@ -54,7 +54,7 @@ export default function Task({ _id: id, isCompleted, title, description, deadlin
       {show && <EditTask setShow={setShow} id={id} title={title} deadline={deadline} description={description} />}
       <div className="flex grow gap-2 items-start">
         <button
-          className="border mt-1   border-purple bg-white rounded  p-1 w-[25px] h-[25px]"
+          className="border-2 mt-1   border-purple bg-white rounded  p-1 w-[25px] h-[25px]"
           onClick={handleUpdateState}
         >
           {isCompleted && (
