@@ -32,7 +32,7 @@ const signin = async (details) => {
     toast("Please wait")
     const { data } = await axios.post('/auth/register', details)
     console.log(data)
-    toast.success("login success")
+    toast.success("sigin success")
 
     return data
   }
