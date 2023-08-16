@@ -12,7 +12,7 @@ function Input({ label, value, name, handleChange, type }) {
         name={name}
         value={value}
         onChange={handleChange}
-        className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0"
+        className="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 text-black"
         placeholder={label}
       />
 

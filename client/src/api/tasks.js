@@ -37,7 +37,7 @@ const updateTask = async (id, details) => {
     // toast("Please Wait")
     const { data } = await axios.patch(`/tasks/${id}`, details)
     console.log(data)
-    toast("Updated SuccesFully")
+    toast.success("Updated SuccesFully")
     return data;
   }
   catch (err) {

@@ -1,11 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { BsFillTrashFill } from "react-icons/bs";
-import { AiFillCaretDown, AiFillCaretUp } from "react-icons/ai";
+import { AiFillCaretDown, AiFillCaretUp, AiFillEdit } from "react-icons/ai";
 import { deleteTask, updateTask } from "../api/tasks";
 import { useTaskContext } from "../contexts/TaskContext";
 import { toast } from "react-toastify";
+import EditTask from "./EditTask";
 export default function Task({ _id: id, isCompleted, title, description, deadline }) {
-  const [show, setShow] = useState(isCompleted);
+  const [show, setShow] = useState(false);
   const [expand, setExpand] = useState(false);
   const { tasks, setTasks } = useTaskContext();
 
@@ -50,6 +51,7 @@ export default function Task({ _id: id, isCompleted, title, description, deadlin
 
   return (
     <div className="text-purple-600 flex items-start text-lg  gap-2">
+      {show && <EditTask setShow={setShow} id={id} title={title} deadline={deadline} description={description} />}
       <div className="flex grow gap-2 items-start">
         <button
           className="border mt-1   border-purple bg-white rounded  p-1 w-[25px] h-[25px]"
@@ -76,9 +78,9 @@ export default function Task({ _id: id, isCompleted, title, description, deadlin
           </span>
         )}
         <span className="text-sm ">
-          {new Date(deadline).getDate()}/{new Date(deadline).getMonth()}/{new Date(deadline).getFullYear()}
+          {new Date(deadline).getDate()}/{new Date(deadline).getMonth() + 1}/{new Date(deadline).getFullYear()}
         </span>
-
+        <AiFillEdit className="cursor-pointer" onClick={() => setShow(true)} />
         <BsFillTrashFill className="cursor-pointer" onClick={onDelete} />
       </div>
     </div>

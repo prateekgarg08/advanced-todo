@@ -1,19 +1,21 @@
 import React, { useState } from "react";
 import Input from "./common/Input";
 import Button from "./common/Button";
-import { createTask } from "../api/tasks";
+import { createTask, updateTask } from "../api/tasks";
 import { useTaskContext } from "../contexts/TaskContext";
 import { toast } from "react-toastify";
-export default function AddTask({ setShow }) {
-  const { setTasks } = useTaskContext();
+export default function EditTask({ setShow, id, title, description, deadline }) {
+  const { setTasks, tasks } = useTaskContext();
+  const date = new Date(deadline);
+  // console.log(`${date.getFullYear()}-${date.getMonth() < 9 ? "0" : ""}${date.getMonth() + 1}-${date.getDate()}`);
   const [details, setDetails] = useState({
-    title: "",
-    description: "",
-    deadline: "",
+    title: title,
+    description: description,
+    deadline: `${date.getFullYear()}-${date.getMonth() < 9 ? "0" : ""}${date.getMonth() + 1}-${date.getDate()}`,
   });
   function handleChange(e) {
     const { name, value } = e.target;
-
+    console.log(value);
     if (e.target.name == name) {
       setDetails((obj) => {
         return {
@@ -39,14 +41,19 @@ export default function AddTask({ setShow }) {
     }
     try {
       toast("Please Wait");
-      const data = await createTask(details);
+      const data = await updateTask(id, details);
       if (!data.task) throw Error(data.response.data.msg);
-      setTasks((obj) => {
-        const arr = [...obj];
-        arr.push(data.task);
-        return arr;
-      });
-      toast.success("Successfully added task");
+      setTasks(
+        tasks.map((t) => {
+          console.log(id == t._id);
+          if (t._id != id) {
+            return t;
+          } else {
+            return data.task;
+          }
+        })
+      );
+      // toast.success("Successfully updated task");
       setShow(false);
     } catch (err) {
       console.log(err);
@@ -60,7 +67,7 @@ export default function AddTask({ setShow }) {
     <div className="fixed inset-0 flex flex-col justify-center items-center bg-black/20">
       <div className="absolute inset-0" onClick={() => setShow(false)}></div>
       <div className=" relative z-10 max-w-xl w-full bg-white  flex flex-col px-4 py-3 gap-4">
-        <h2 className="text-xl font-bold text-purple-600">Add Task</h2>
+        <h2 className="text-xl font-bold text-purple-600">Edit Task</h2>
         <div className="flex flex-col gap-3">
           <Input label={"title"} name={"title"} value={details.title} handleChange={handleChange} />
           <Input
@@ -81,7 +88,7 @@ export default function AddTask({ setShow }) {
           />
         </div>
         <div className="w-full flex justify-center">
-          <Button onClick={handleSubmit}>Add</Button>
+          <Button onClick={handleSubmit}>Update</Button>
         </div>
       </div>
     </div>
